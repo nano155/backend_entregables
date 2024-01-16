@@ -15,6 +15,7 @@ class Product {
 class ProductManager  {
     constructor(){
         this.products = []
+        this.id = 0
     }
     getProducts=()=>{
 
@@ -28,7 +29,7 @@ class ProductManager  {
             thumbnail: producto.thumbnail,
             code: producto.code,
             stock: producto.stock,
-            id: producto.id
+            id: this.id++
         }
         const existe = this.products.some(item => item.code === product.code)
         
@@ -51,14 +52,18 @@ const producto1 = new Product('producto prueba', 'Este es un producto', 200, 'Si
 
 const producto2 = new Product('producto prueba', 'Este es un producto', 200, 'Sin Imagen', 'abc1234', 25)
 
+const producto3 = new Product('producto prueba', 'Este es un producto', 200, 'Sin Imagen', 'abc12345', 25)
+
 console.log(admin.getProducts());
 
 admin.addProduct(producto1);
 
 admin.addProduct(producto2);
 
+admin.addProduct(producto3);
+
 console.log(admin.getProducts());
-console.log(admin.getProductById(producto2.id));
+console.log(admin.getProductById(2));
 console.log(admin.getProductById(20));
 
 

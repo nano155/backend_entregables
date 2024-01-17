@@ -15,8 +15,9 @@ class Product {
 class ProductManager  {
     constructor(){
         this.products = []
-        this.id = 0
     }
+    static id = 0
+
     getProducts=()=>{
 
         return this.products
@@ -29,7 +30,7 @@ class ProductManager  {
             thumbnail: producto.thumbnail,
             code: producto.code,
             stock: producto.stock,
-            id: this.id++
+            id: ProductManager.id++
         }
         const existe = this.products.some(item => item.code === product.code)
         

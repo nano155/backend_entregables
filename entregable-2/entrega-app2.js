@@ -1,5 +1,5 @@
 
-const fs = require('fs')
+import fs from 'fs';
 
 class Product {
 
@@ -19,10 +19,10 @@ class Product {
 }
 
 
-class ProductManager {
+export class ProductManager {
   constructor() {
     this.products = []
-    this.patch = "./ejemploPromesa.txt"
+    this.path = "./ejemploPromesa.txt"
   }
 
   static id = 0;
@@ -32,12 +32,12 @@ class ProductManager {
     const newProduct = new Product( title, description, price, thumbnail, code, stock, ++ProductManager.id );
 
     this.products.push(newProduct)
-    await fs.promises.writeFile(this.patch, JSON.stringify(this.products))
+    await fs.promises.writeFile(this.path, JSON.stringify(this.products))
 
   }
 
   #readProducts = async () =>{
-    let respuesta = await fs.promises.readFile(this.patch, 'utf-8')
+    let respuesta = await fs.promises.readFile(this.path, 'utf-8')
 
    return (JSON.parse(respuesta));
   }
@@ -48,7 +48,7 @@ class ProductManager {
       if(!productosP) 
       throw new Error('No se encuentran productos en el directorio')
 
-      console.log(productosP);
+      return (productosP);
       
   }
   
@@ -56,10 +56,10 @@ class ProductManager {
       const productosId = await this.#readProducts()
 
       if(!productosId.find(res => res.id === id))
-      throw new Error(`No se encontro productos con el id ${id}`)
+      return
 
 
-      console.log(productosId.find(res => res.id === id));
+      return (productosId.find(res => res.id === id));
       
   
   }
@@ -76,7 +76,7 @@ class ProductManager {
       let nuevoArray = productosIdfilter.filter(res => res.id !== id)
 
 
-      await fs.promises.writeFile(this.patch, JSON.stringify(nuevoArray))
+      await fs.promises.writeFile(this.path, JSON.stringify(nuevoArray))
 
       console.log(`fue borrado el array con id ${id}`)
   }
@@ -85,29 +85,37 @@ class ProductManager {
     await this.deleteProduct(id);
     let productoPrev = await this.#readProducts();
     let productoNew = [{id, ...producto}, ...productoPrev];
-    await fs.promises.writeFile(this.patch, JSON.stringify(productoNew))
+    await fs.promises.writeFile(this.path, JSON.stringify(productoNew))
   }
 }
 
-const product = new ProductManager()
+export const product = new ProductManager()
 
-product.addProduct('Producto prueba1', "Este es un producto", 200, "Sin Imagen", "abc123", 25 );
-product.addProduct('Producto prueba2', "Este es un producto", 100, "Sin Imagen", "abc124", 25 );
-product.addProduct('Producto prueba3', "Este es un producto", 150, "Sin Imagen", "abc1245", 25 );
+// product.addProduct('Producto prueba1', "Este es un producto", 200, "Sin Imagen", "abc123", 25 );
+// product.addProduct('Producto prueba2', "Este es un producto", 100, "Sin Imagen", "abc124", 25 );
+// product.addProduct('Producto prueba3', "Este es un producto", 150, "Sin Imagen", "abc1245", 25 );
+// product.addProduct('Producto prueba4', "Este es un producto", 150, "Sin Imagen", "abc1245", 25 );
+// product.addProduct('Producto prueba5', "Este es un producto", 150, "Sin Imagen", "abc1245", 25 );
+// product.addProduct('Producto prueba6', "Este es un producto", 150, "Sin Imagen", "abc1245", 25 );
+// product.addProduct('Producto prueba7', "Este es un producto", 150, "Sin Imagen", "abc1245", 25 );
 
-product.getProducts()
+// product.getProducts()
 
-product.deleteProduct(3)
+// product.deleteProduct(3)
 
-product.updateProducts ({
-  title : 'producto nuevo 3',
-  description : "Este es un producto",
-  price : 150,
-  thumbnail : "Sin Imagen",
-  code : "abc1245",
-  stock : 25,
-  id : 3,
-})
+// product.updateProducts ({
+//   title : 'producto nuevo 3',
+//   description : "Este es un producto",
+//   price : 150,
+//   thumbnail : "Sin Imagen",
+//   code : "abc1245",
+//   stock : 25,
+//   id : 3,
+// })
+
+
+
+
 
 
 
